@@ -5,15 +5,15 @@
 #' which has higher occruances of wildlifre events. Parameters include both weather variables, fire characteristics,
 #' and characteristics of a home.
 #'
-#' @param defensible_space = is the area around a home or other structure that has been modified to reduce fire hazard. Options are between 0 to +100ft.
-#' @param fire_proofing_degree = amount of fire proofing done by a household to prevent things like embers from entering the home or reduce flamability of the house.
+#' @param defensible_space  is the area around a home or other structure that has been modified to reduce fire hazard. Options are between 0 to +100ft.
+#' @param fire_proofing_degree  amount of fire proofing done by a household to prevent things like embers from entering the home or reduce flamability of the house.
 #' values ranked from 0 (none) to 5 (very high).
-#' @param temp = temperature (degrees F)
-#' @param humidity = humidity (%)
-#' @param wind_speed = wind speed (mph)
+#' @param temp  temperature (degrees F)
+#' @param humidity humidity (percent)
+#' @param wind_speed  wind speed (mph)
 #' @author Hannah Garcia-Wickstrum and Anne-Marie Parkinson
 #' @examples home_risk_index(data_frame)
-#' @return Score (low (1) to high (5)) of a home is being damaged by wildfire during a wildfire event.
+#' @return Ranking (Very Low to Extreme) of ow vulnerable a home is being damaged by wildfire during a wildfire event.
 
 
 
@@ -25,21 +25,21 @@ home_risk_index = function(index_data) {
   # assign variable values
   defensible_space_score = ifelse(index_data$defensible_space == 0, 5,
                                   ifelse(index_data$defensible_space < 30, 3,
-                                         ifelse(index_data$defensible_space < 99, 2,
-                                                ifelse(index_data$defensible_space >= 100, 2))))
+                                         ifelse(index_data$defensible_space <= 99, 2,
+                                                ifelse(index_data$defensible_space >= 100, 2, NA))))
 
   fire_proofing_score = ifelse(index_data$fire_proofing_degree == 0, 5,
                                ifelse(index_data$fire_proofing_degree == 1, 4,
                                       ifelse(index_data$fire_proofing_degree == 2, 3,
                                              ifelse(index_data$fire_proofing_degree == 3, 3,
                                                     ifelse(index_data$fire_proofing_degree == 4, 2,
-                                                           ifelse(index_data$fire_proofing_degree == 5, 1))))))
+                                                           ifelse(index_data$fire_proofing_degree == 5, 1, NA))))))
 
   temperature_score = ifelse(index_data$temp < 50, 1,
                              ifelse(index_data$temp < 60, 2,
                                     ifelse(index_data$temp < 70, 3,
                                            ifelse(index_data$temp < 80, 4,
-                                                  ifelse(index_data$temp >= 80, 5)))))
+                                                  ifelse(index_data$temp >= 80, 5, NA)))))
 
   humidity_score = ifelse(index_data$humidity < 10, 5,
                           ifelse(index_data$humidity < 25, 4,
@@ -67,7 +67,7 @@ home_risk_index = function(index_data) {
   vulnerability_assessment = as.data.frame(vulnerability_assessment)
 
   # combine score to entered data frame
-  vulnerability_assessment_df = merge(index_data, vulnerability_assessment)
+  vulnerability_assessment_df = cbind(index_data, vulnerability_assessment)
 
 
   return(vulnerability_assessment_df)
