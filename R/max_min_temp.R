@@ -9,7 +9,7 @@ library(roxygen2)
 library(tidyverse)
 
 #' Maximum and Minimum Temperatures
-#' 
+#'
 #' This function returns the maximum and minimum temperatures from a list
 #' @param df refers to the data frame which has a list of temperatures
 #' @author Anne-Marie and Hannah
@@ -22,14 +22,7 @@ max_min_temp = function(df) {
   maxtemp = apply(df, 2, max)
   return(list(min=  mintemp, max = maxtemp))
 }
-  
-# Data and documentation
 
-temp = runif(min=35, max=110, n=100)
-# Create a data frame
-example_temp_df = data.frame(temp)
-
-max_min_temp(example_temp_df) 
 
 # Documentation for maximum and minimum temperature data
 
