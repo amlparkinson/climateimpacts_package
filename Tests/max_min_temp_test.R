@@ -1,4 +1,4 @@
-## tests for meanwinterprecip function
+## tests for max_min_temp function
 
 ## load library
 library(testthat)
